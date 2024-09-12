@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id              Int              @id @default(autoincrement())
+    name            String           @db.VarChar(50)
+    email           String           @unique
+    password        String           @db.VarChar(30)
+    phone           String           @unique @db.VarChar(15)
+    phoneVisibility PhoneVisibility  @default(PUBLIC)
+    role            Role
+    isVerified      Boolean?         @default(false)
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    profile         Profile?
+    student         Student?
+    faculty         Faculty?
+    education       Education[]
+    socialMedia     SocialMedia?
+    workExperience  WorkExperience[]
+}
+
+model Profile {
+    id            Int            @id @default(autoincrement())
+    user          User           @relation(fields: [userId], references: [id])
+    userId        Int            @unique
+    gender        Gender?        @default(NOT_SPECIFIED)
+    maritalStatus MaritalStatus? @default(NOT_SPECIFIED)
+    location      String?
+    dob           DateTime?      @db.Date
+    about         String?        @default("") @db.Text
+}
+
+model Student {
+    id          Int    @id @default(autoincrement())
+    user        User   @relation(fields: [userId], references: [id])
+    userId      Int    @unique
+    course      String @default("Diploma")
+    branch      Branch
+    joiningYear Int
+    passingYear Int
+    rollNo      String @unique
+}
+
+model Faculty {
+    id          Int        @id @default(autoincrement())
+    user        User       @relation(fields: [userId], references: [id])
+    userId      Int        @unique
+    jobTitle    String
+    department  Department
+    joiningYear Int
+    leftYear    String
+}
+
+model Education {
+    id          Int    @id @default(autoincrement())
+    user        User   @relation(fields: [userId], references: [id])
+    userId      Int
+    institute   String
+    degree      String
+    branch      String
+    joiningYear Int
+    passingYear Int
+}
+
+model SocialMedia {
+    id        Int     @id @default(autoincrement())
+    user      User    @relation(fields: [userId], references: [id])
+    userId    Int     @unique
+    facebook  String?
+    instagram String?
+    linkedIn  String?
+    twitter   String?
+}
+
+model WorkExperience {
+    id          Int    @id @default(autoincrement())
+    user        User   @relation(fields: [userId], references: [id])
+    userId      Int
+    company     String
+    jobTitle    String
+    joiningYear Int
+    leftYear    String
+}
+
+enum PhoneVisibility {
+    PUBLIC
+    PRIVATE
+}
+
+enum Role {
+    STUDENT
+    FACULTY
+    ALUMNI
+    ADMIN
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    NOT_SPECIFIED
+}
+
+enum MaritalStatus {
+    SINGLE
+    MARRIED
+    NOT_SPECIFIED
+}
+
+enum Branch {
+    COMPUTER_SCIENCE
+    MECHANICAL
+    ARCHITECTURAL
+    CIVIL
+    ELECTRICAL
+}
+
+enum Department {
+    COMPUTER_SCIENCE
+    MECHANICAL
+    ARCHITECTURAL
+    CIVIL
+    ELECTRICAL
+}

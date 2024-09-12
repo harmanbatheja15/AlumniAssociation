@@ -1,0 +1,101 @@
+const express = require('express');
+const { userMiddleware, roleMiddleware } = require('../middlewares/user');
+const { signup, signin, logout, updateSignup } = require('../controllers/auth');
+const {
+	addProfile,
+	updateProfile,
+	getProfile,
+} = require('../controllers/profile');
+const {
+	addEducation,
+	addSocialMedia,
+	addWorkExperience,
+	addStudentDetails,
+	addFacultyDetails,
+	updateStudentDetails,
+	updateFacultyDetails,
+	updateEducation,
+	updateSocialMedia,
+	updateWorkExperience,
+	getAllUsers,
+	getUserById,
+} = require('../controllers/userDetails');
+const router = express.Router();
+
+// Check if server is up
+router.get('/', (req, res) => {
+	res.json({ message: 'Server is up!' });
+});
+
+// Signup
+router.post('/signup', signup);
+router.put('/signup', userMiddleware, updateSignup);
+
+// Signin
+router.post('/signin', signin);
+
+// Logout
+router.post('/logout', logout);
+
+// Profile Details
+router.get('/profile', userMiddleware, getProfile);
+router.post('/profile', userMiddleware, addProfile);
+router.put('/profile', userMiddleware, updateProfile);
+
+// Student Details
+router.post(
+	'/student',
+	userMiddleware,
+	roleMiddleware(['STUDENT', 'ALUMNI', 'ADMIN']),
+	addStudentDetails
+);
+router.put(
+	'/student',
+	userMiddleware,
+	roleMiddleware(['STUDENT', 'ALUMNI', 'ADMIN']),
+	updateStudentDetails
+);
+
+// Faculty Details
+router.post(
+	'/faculty',
+	userMiddleware,
+	roleMiddleware(['FACULTY', 'ADMIN']),
+	addFacultyDetails
+);
+router.put(
+	'/faculty',
+	userMiddleware,
+	roleMiddleware(['FACULTY', 'ADMIN']),
+	updateFacultyDetails
+);
+
+// Education
+router.post(
+	'/education',
+	userMiddleware,
+	roleMiddleware(['ALUMNI', 'ADMIN']),
+	addEducation
+);
+router.put(
+	'/education',
+	userMiddleware,
+	roleMiddleware(['ALUMNI', 'ADMIN']),
+	updateEducation
+);
+
+// Social Media
+router.post('/socialMedia', userMiddleware, addSocialMedia);
+router.put('/socialMedia', userMiddleware, updateSocialMedia);
+
+// Work Experience
+router.post('/workExperience', userMiddleware, addWorkExperience);
+router.put('/workExperience', userMiddleware, updateWorkExperience);
+
+// Get all users
+router.get('/users', userMiddleware, getAllUsers);
+
+// Get user by id
+router.get('/user/:id', userMiddleware, getUserById);
+
+module.exports = router;
