@@ -1,3 +1,6 @@
+# Technologies Used:
+React, Node, Express, Postgres, Prisma ORM, Tailwind CSS
+
 # Steps to run the project:
 - git clone `https://github.com/harmanbatheja15/AlumniAssociation.git`
 
