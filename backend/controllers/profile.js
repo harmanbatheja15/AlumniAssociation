@@ -22,6 +22,23 @@ exports.getProfile = async (req, res) => {
 	}
 };
 
+exports.getInformation = async (req, res) => {
+	try {
+		const { id } = req.user;
+		const user = await prisma.user.findUnique({
+			where: {
+				id: id,
+			},
+			include: {
+				profile: true,
+			},
+		});
+		res.status(200).json({ user });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
+
 exports.addProfile = async (req, res) => {
 	try {
 		const { id } = req.user;

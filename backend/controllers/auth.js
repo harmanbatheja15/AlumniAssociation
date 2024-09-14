@@ -66,15 +66,9 @@ exports.signin = async (req, res) => {
 			return res.status(400).json({ error: 'Invalid credentials' });
 		}
 
-		let profileExists, studentExists, facultyExists;
-
-		if (user && user.password === password) {
-			profileExists = !!user.profile;
-			studentExists = !!user.student;
-			facultyExists = !!user.faculty;
-		} else {
-			res.status(401).json({ error: 'Invalid email or password.' });
-		}
+		const profileExists = !!user.profile;
+		const studentExists = !!user.student;
+		const facultyExists = !!user.faculty;
 
 		const payload = { id: user.id, role: user.role };
 		const token = jwt.sign(payload, process.env.JWT_SECRET);

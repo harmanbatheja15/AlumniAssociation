@@ -2,52 +2,67 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight } from 'lucide-react';
+import { useStore } from '../store';
 
 const Signin = ({ setIsAuthenticated }) => {
+	const { user } = useStore();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
 
 	const handleSignin = async (e) => {
 		e.preventDefault();
 		try {
+			setLoading(true);
 			const response = await axios.post(
 				'http://localhost:3000/api/user/signin',
-				{
-					email,
-					password,
-				},
-				{
-					withCredentials: true,
-				}
+				{ email, password },
+				{ withCredentials: true }
 			);
-			const { user, profileExists, studentExists, facultyExists } =
-				response.data;
+			setLoading(false);
+			const { user, profileExists, studentExists, facultyExists } = response.data;
+	
 			alert('Signin successful!');
 			setIsAuthenticated(true);
+	
+			// Log the user and existence flags for debugging
+			console.log('User:', user);
+			console.log('Profile Exists:', profileExists);
+			console.log('Student Exists:', studentExists);
+			console.log('Faculty Exists:', facultyExists);
+			console.log('User Role:', user.role);
+	
 			if (profileExists) {
-				if (user.role === 'STUDENT') {
+				if (user.role === 'STUDENT' || user.role === 'ALUMNI') {
 					if (studentExists) {
+						console.log('Navigating to /profile');
 						navigate('/profile');
 					} else {
+						console.log('Navigating to /addStudent');
 						navigate('/addStudent');
 					}
 				} else if (user.role === 'FACULTY') {
 					if (facultyExists) {
+						console.log('Navigating to /profile');
 						navigate('/profile');
 					} else {
+						console.log('Navigating to /addFaculty');
 						navigate('/addFaculty');
 					}
 				} else if (user.role === 'ADMIN') {
+					console.log('Navigating to /profile');
 					navigate('/profile');
 				}
 			} else {
+				console.log('Navigating to /addProfile');
 				navigate('/addProfile');
 			}
 		} catch (error) {
-			console.error('Error while signing up! ', error);
+			console.error('Error while signing in! ', error);
 			alert('Invalid credentials!');
+			setLoading(false);
 		}
 	};
 
@@ -119,14 +134,6 @@ const Signin = ({ setIsAuthenticated }) => {
 											{' '}
 											Password{' '}
 										</label>
-										<a
-											href='#'
-											title=''
-											className='text-sm font-semibold text-black hover:underline'
-										>
-											{' '}
-											Forgot password?{' '}
-										</a>
 									</div>
 									<div className='mt-2'>
 										<input
@@ -140,16 +147,25 @@ const Signin = ({ setIsAuthenticated }) => {
 										></input>
 									</div>
 								</div>
+								<a href='/signin' className='text-sm font-semibold text-black hover:underline'>
+									Forgot password?
+								</a>
 								<div>
 									<button
 										type='submit'
 										className='inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80'
 									>
-										Submit{' '}
-										<ArrowRight
-											className='ml-2'
-											size={16}
-										/>
+										{loading ? (
+											<div className="w-7 h-7 rounded-full animate-spin border-4 border-solid border-blue-500 border-t-transparent shadow-md"></div>
+										) : (
+											<>
+												Submit{' '}
+												<ArrowRight
+													className='ml-2'
+													size={16}
+												/>
+											</>
+										)}
 									</button>
 								</div>
 							</div>

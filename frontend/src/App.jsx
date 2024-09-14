@@ -9,7 +9,8 @@ import Signin from './user/Signin';
 import AddProfile from './user/AddProfile';
 import AddStudentDetails from './user/AddStudentDetails';
 import AddFacultyDetails from './user/AddFacultyDetails';
-import Profile from './user/Profile';
+import Profile from './user/Profile2';
+import Footer from './components/Footer';
 
 const App = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,6 +81,7 @@ const App = () => {
 						}
 					/>
 				</Routes>
+				<Footer />
 			</BrowserRouter>
 		</>
 	);

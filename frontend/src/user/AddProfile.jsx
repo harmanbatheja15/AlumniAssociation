@@ -2,15 +2,24 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight } from 'lucide-react';
+import { useStore } from '../store';
 
 const AddProfile = () => {
+	const { user } = useStore();
 	const [gender, setGender] = useState('');
 	const [maritalStatus, setMaritalStatus] = useState('');
 	const [location, setLocation] = useState('');
 	const [dob, setDob] = useState('');
 	const [about, setAbout] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
+
+	if(!user) {
+		navigate('/signin');
+	} else if(user.profileExists) {
+		navigate('/profile');
+	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -20,6 +29,7 @@ const AddProfile = () => {
 			dateParts[1] - 1,
 			dateParts[2]
 		).toISOString();
+		setLoading(true);
 		await axios
 			.post(
 				'http://localhost:3000/api/user/profile',
@@ -33,8 +43,23 @@ const AddProfile = () => {
 				{ withCredentials: true }
 			)
 			.then((res) => {
+				setLoading(false);
 				alert('Information added successfully!');
-				navigate('/');
+				if (user.role === 'STUDENT') {
+					if (studentExists) {
+						navigate('/profile');
+					} else {
+						navigate('/addStudent');
+					}
+				} else if (user.role === 'FACULTY') {
+					if (facultyExists) {
+						navigate('/profile');
+					} else {
+						navigate('/addFaculty');
+					}
+				} else {
+					navigate('/profile');
+				}
 			})
 			.catch((err) => {
 				console.log(err);
@@ -203,11 +228,17 @@ const AddProfile = () => {
 										type='submit'
 										className='inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80'
 									>
-										Submit{' '}
-										<ArrowRight
-											className='ml-2'
-											size={16}
-										/>
+										{loading ? (
+											<div className="w-7 h-7 rounded-full animate-spin border-4 border-solid border-blue-500 border-t-transparent shadow-md"></div>
+										) : (
+											<>
+												Submit{' '}
+												<ArrowRight
+													className='ml-2'
+													size={16}
+												/>
+											</>
+										)}
 									</button>
 								</div>
 							</div>

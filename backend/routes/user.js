@@ -5,6 +5,7 @@ const {
 	addProfile,
 	updateProfile,
 	getProfile,
+	getInformation,
 } = require('../controllers/profile');
 const {
 	addEducation,
@@ -38,6 +39,7 @@ router.post('/signin', signin);
 router.post('/logout', logout);
 
 // Profile Details
+router.get('/information', userMiddleware, getInformation);
 router.get('/profile', userMiddleware, getProfile);
 router.post('/profile', userMiddleware, addProfile);
 router.put('/profile', userMiddleware, updateProfile);

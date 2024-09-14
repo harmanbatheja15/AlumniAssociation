@@ -26,11 +26,11 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 	};
 
 	return (
-		<div className='relative w-full bg-white'>
-			<div className='mx-auto flex items-center justify-between px-4 py-2 sm:px-6 lg:px-8'>
+		<div className='sticky top-0 z-[10] shadow-xl w-full bg-white'>
+			<div className='mx-auto flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8'>
 				<div className='inline-flex items-center space-x-2'>
 					<Link to='/'>
-						<span className='font-bold'>DevUI</span>
+						<span className='font-bold'>AlumniAssociation.</span>
 					</Link>
 				</div>
 				<div className='hidden grow items-start lg:flex'>
@@ -52,12 +52,12 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 							</Link>
 						</li>
 						<li>
-							<Link
-								to='/'
+							<a
+								href='#contact'
 								className='text-sm font-semibold text-gray-800 hover:text-gray-900'
 							>
 								Contact
-							</Link>
+							</a>
 						</li>
 					</ul>
 				</div>

@@ -2,19 +2,27 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight } from 'lucide-react';
+import { useStore } from '../store';
 
 const Signup = () => {
+	const { user } = useStore();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
 	const [phoneVisibility, setPhoneVisibility] = useState('PUBLIC');
 	const [role, setRole] = useState();
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
 
+	if(user) {
+		navigate('/profile');
+	}
+
 	const handleSignup = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 		await axios
 			.post(
 				'http://localhost:3000/api/user/signup',
@@ -29,6 +37,7 @@ const Signup = () => {
 				{ withCredentials: true }
 			)
 			.then((res) => {
+				setLoading(false);
 				alert('Signup successful! Signin to continue!');
 				navigate('/signin');
 			})
@@ -244,11 +253,17 @@ const Signup = () => {
 										type='submit'
 										className='inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80'
 									>
-										Create Account{' '}
-										<ArrowRight
-											className='ml-2'
-											size={16}
-										/>
+										{loading ? (
+											<div className="w-7 h-7 rounded-full animate-spin border-4 border-solid border-blue-500 border-t-transparent shadow-md"></div>
+										) : (
+											<>
+												Create Account{' '}
+												<ArrowRight
+													className='ml-2'
+													size={16}
+												/>
+											</>
+										)}
 									</button>
 								</div>
 							</div>
