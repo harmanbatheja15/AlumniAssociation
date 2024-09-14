@@ -20,6 +20,7 @@ const {
 	updateWorkExperience,
 	getAllUsers,
 	getUserById,
+	getSocialMedia
 } = require('../controllers/userDetails');
 const router = express.Router();
 
@@ -87,6 +88,7 @@ router.put(
 );
 
 // Social Media
+router.get('/socialMedia', userMiddleware, getSocialMedia);
 router.post('/socialMedia', userMiddleware, addSocialMedia);
 router.put('/socialMedia', userMiddleware, updateSocialMedia);
 

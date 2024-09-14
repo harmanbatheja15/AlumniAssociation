@@ -45,20 +45,27 @@ const AddProfile = () => {
 			.then((res) => {
 				setLoading(false);
 				alert('Information added successfully!');
-				if (user.role === 'STUDENT') {
-					if (studentExists) {
+				if (user) {
+					if (user?.role === 'STUDENT' || user?.role === 'ALUMNI') {
+						if (user?.studentExists) {
+							console.log('Navigating to /profile');
+							navigate('/profile');
+						} else {
+							console.log('Navigating to /addStudent');
+							navigate('/addStudent');
+						}
+					} else if (user?.role === 'FACULTY') {
+						if (user?.facultyExists) {
+							console.log('Navigating to /profile');
+							navigate('/profile');
+						} else {
+							console.log('Navigating to /addFaculty');
+							navigate('/addFaculty');
+						}
+					} else if (user?.role === 'ADMIN') {
+						console.log('Navigating to /profile');
 						navigate('/profile');
-					} else {
-						navigate('/addStudent');
 					}
-				} else if (user.role === 'FACULTY') {
-					if (facultyExists) {
-						navigate('/profile');
-					} else {
-						navigate('/addFaculty');
-					}
-				} else {
-					navigate('/profile');
 				}
 			})
 			.catch((err) => {
@@ -109,7 +116,6 @@ const AddProfile = () => {
 											className='flex w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50'
 											placeholder='About Me'
 											id='about'
-											required
 											onChange={(e) =>
 												setAbout(e.target.value)
 											}
@@ -130,7 +136,6 @@ const AddProfile = () => {
 											type='text'
 											placeholder='Location'
 											id='location'
-											required
 											onChange={(e) =>
 												setLocation(e.target.value)
 											}

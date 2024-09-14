@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { useStore } from '../store';
 
 const Signin = ({ setIsAuthenticated }) => {
-	const { user } = useStore();
+	// const { user } = useStore();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);

@@ -130,16 +130,30 @@ exports.updateEducation = async (req, res) => {
 };
 
 // Social Media
+exports.getSocialMedia = async (req, res) => {
+	try {
+		const { id } = req.user;
+		const socialMedia = await prisma.socialMedia.findUnique({
+			where: {
+				id: parseInt(id),
+			},
+		});
+		res.status(200).json(socialMedia);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
 exports.addSocialMedia = async (req, res) => {
 	try {
 		const { id } = req.user;
-		const { facebook, instagram, linkedIn, twitter } = req.body;
+		const { facebook, instagram, linkedin, twitter } = req.body;
 		const socialMedia = await prisma.socialMedia.create({
 			data: {
 				userId: id,
 				facebook,
 				instagram,
-				linkedIn,
+				linkedin,
 				twitter,
 			},
 		});
@@ -152,7 +166,7 @@ exports.addSocialMedia = async (req, res) => {
 exports.updateSocialMedia = async (req, res) => {
 	try {
 		const { id } = req.user;
-		const { facebook, instagram, linkedIn, twitter } = req.body;
+		const { facebook, instagram, linkedin, twitter } = req.body;
 		const socialMedia = await prisma.socialMedia.update({
 			where: {
 				userId: id,
@@ -160,7 +174,7 @@ exports.updateSocialMedia = async (req, res) => {
 			data: {
 				facebook,
 				instagram,
-				linkedIn,
+				linkedin,
 				twitter,
 			},
 		});

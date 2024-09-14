@@ -3,8 +3,7 @@ const prisma = require('../prisma-client');
 
 exports.signup = async (req, res) => {
 	try {
-		const { name, email, password, phone, phoneVisibility, role } =
-			req.body;
+		const { name, email, password, phone, phoneVisibility, role } = req.body;
 		const user = await prisma.user.create({
 			data: {
 				name,
@@ -13,7 +12,11 @@ exports.signup = async (req, res) => {
 				phone,
 				phoneVisibility,
 				role,
+				socialMedia: {
+					create: {}
+				},
 			},
+			include: { socialMedia: true },
 		});
 		const payload = { id: user.id, role: user.role };
 		const token = jwt.sign(payload, process.env.JWT_SECRET);

@@ -16,10 +16,6 @@ const Signup = () => {
 
 	const navigate = useNavigate();
 
-	if(user) {
-		navigate('/profile');
-	}
-
 	const handleSignup = async (e) => {
 		e.preventDefault();
 		setLoading(true);

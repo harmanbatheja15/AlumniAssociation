@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "PhoneVisibility" AS ENUM ('PUBLIC', 'PRIVATE');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('STUDENT', 'FACULTY', 'ALUMNI', 'ADMIN');
 
 -- CreateEnum
@@ -20,8 +23,8 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" VARCHAR(30) NOT NULL,
     "phone" VARCHAR(15) NOT NULL,
-    "phoneVisibility" BOOLEAN NOT NULL DEFAULT true,
-    "role" "Role" NOT NULL DEFAULT 'STUDENT',
+    "phoneVisibility" "PhoneVisibility" NOT NULL DEFAULT 'PUBLIC',
+    "role" "Role" NOT NULL,
     "isVerified" BOOLEAN DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -46,7 +49,7 @@ CREATE TABLE "Profile" (
 CREATE TABLE "Student" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "course" TEXT DEFAULT 'Diploma',
+    "course" TEXT NOT NULL DEFAULT 'Diploma',
     "branch" "Branch" NOT NULL,
     "joiningYear" INTEGER NOT NULL,
     "passingYear" INTEGER NOT NULL,
@@ -73,7 +76,7 @@ CREATE TABLE "Education" (
     "userId" INTEGER NOT NULL,
     "institute" TEXT NOT NULL,
     "degree" TEXT NOT NULL,
-    "branch" "Branch" NOT NULL,
+    "branch" TEXT NOT NULL,
     "joiningYear" INTEGER NOT NULL,
     "passingYear" INTEGER NOT NULL,
 
@@ -84,10 +87,10 @@ CREATE TABLE "Education" (
 CREATE TABLE "SocialMedia" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "facebook" TEXT,
-    "instagram" TEXT,
-    "linkedIn" TEXT,
-    "twitter" TEXT,
+    "facebook" TEXT DEFAULT '',
+    "instagram" TEXT DEFAULT '',
+    "linkedin" TEXT DEFAULT '',
+    "twitter" TEXT DEFAULT '',
 
     CONSTRAINT "SocialMedia_pkey" PRIMARY KEY ("id")
 );

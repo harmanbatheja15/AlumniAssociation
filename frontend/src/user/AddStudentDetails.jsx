@@ -30,7 +30,7 @@ const AddStudentDetails = () => {
 			)
 			.then((res) => {
 				alert('Details added successfully!');
-				navigate('/');
+				navigate('/profile');
 			})
 			.catch((err) => {
 				console.log(err);
