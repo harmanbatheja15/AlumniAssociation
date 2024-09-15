@@ -98,7 +98,7 @@ const Profile = () => {
 								</h2>
 								<p className='flex items-center text-gray-700'>
 									<span className="mr-2"><MdEmail /></span>
-									<span class="break-all">{user?.email}</span>
+									<span className="break-all">{user?.email}</span>
 								</p>
 								<p className='flex items-center text-gray-700'>
 									<span className="mr-2"><FaPhoneAlt /></span>
@@ -187,7 +187,7 @@ const Profile = () => {
 									<button className="w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm" onClick={() => {}}>Add</button>
 								</h2>
 								{user?.education?.map((edu, index) => (
-									<div key={index} className='flex items-start justify-between mb-4 last:mb-0 border rounded-md p-2'>
+									<div key={index} className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'>
 										<div className=''>
 											<h3 className='font-semibold'>
 												{edu.institute}
@@ -210,7 +210,7 @@ const Profile = () => {
 									</div>
 								))}
 								{(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && user?.student && (
-									<div className='flex items-start justify-between mb-4 last:mb-0 border rounded-md p-2'>
+									<div className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'>
 										<div className="">
 											<h3 className='font-semibold'>
 												Thapar Polytechnic College
@@ -241,7 +241,7 @@ const Profile = () => {
 									<button className="w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm" onClick={() => {}}>Add</button>
 								</h2>
 								{user?.role === 'FACULTY' && user?.faculty && (
-									<div className='flex items-start justify-between mb-4 last:mb-0 border rounded-md p-2'>
+									<div className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'>
 										<div className=''>
 											<h3 className='font-semibold'>
 												{user?.faculty?.jobTitle}
@@ -262,7 +262,7 @@ const Profile = () => {
 								)}
 								{user?.workExperience.map(
 									(exp, index) => (
-										<div key={index} className='flex items-start justify-between mb-4 last:mb-0 border rounded-md p-2'>
+										<div key={index} className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'>
 											<div className=''>
 												<h3 className='font-semibold'>
 													{exp.jobTitle}

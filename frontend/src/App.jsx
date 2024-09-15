@@ -11,6 +11,7 @@ import AddStudentDetails from './user/AddStudentDetails';
 import AddFacultyDetails from './user/AddFacultyDetails';
 import Profile from './user/Profile2';
 import Footer from './components/Footer';
+import AlumniDirectory from './user/AlumniDirectory';
 
 const App = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,59 +28,16 @@ const App = () => {
 	return (
 		<>
 			<BrowserRouter>
-				<Navbar
-					isAuthenticated={isAuthenticated}
-					setIsAuthenticated={setIsAuthenticated}
-				/>
+				<Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/signup' element={<Signup />} />
-					<Route
-						path='/signin'
-						element={
-							<Signin setIsAuthenticated={setIsAuthenticated} />
-						}
-					/>
-					<Route
-						path='/addProfile'
-						element={
-							isAuthenticatedFunc() ? (
-								<AddProfile />
-							) : (
-								<Navigate to='/signin' />
-							)
-						}
-					/>
-					<Route
-						path='/addStudent'
-						element={
-							isAuthenticatedFunc() ? (
-								<AddStudentDetails />
-							) : (
-								<Navigate to='/signin' />
-							)
-						}
-					/>
-					<Route
-						path='/addFaculty'
-						element={
-							isAuthenticatedFunc() ? (
-								<AddFacultyDetails />
-							) : (
-								<Navigate to='/signin' />
-							)
-						}
-					/>
-					<Route
-						path='/profile'
-						element={
-							isAuthenticatedFunc() ? (
-								<Profile />
-							) : (
-								<Navigate to='/signin' />
-							)
-						}
-					/>
+					<Route path='/signin' element={<Signin setIsAuthenticated={setIsAuthenticated} />} />
+					<Route path='/addProfile' element={isAuthenticatedFunc() ? <AddProfile /> : <Navigate to='/signin' />} />
+					<Route path='/addStudent' element={isAuthenticatedFunc() ? <AddStudentDetails /> : <Navigate to='/signin' />} />
+					<Route path='/addFaculty' element={isAuthenticatedFunc() ? <AddFacultyDetails /> : <Navigate to='/signin' />} />
+					<Route path='/profile' element={isAuthenticatedFunc() ? <Profile /> : <Navigate to='/signin' />} />
+					<Route path='/alumniDirectory' element={<AlumniDirectory />} />
 				</Routes>
 				<Footer />
 			</BrowserRouter>

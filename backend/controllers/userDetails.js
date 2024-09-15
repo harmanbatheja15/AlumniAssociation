@@ -228,7 +228,12 @@ exports.updateWorkExperience = async (req, res) => {
 // Get all users
 exports.getAllUsers = async (req, res) => {
 	try {
-		const users = await prisma.user.findMany();
+		const users = await prisma.user.findMany({
+			include: {
+				student: true,
+				faculty: true,
+			},
+		});
 		res.status(200).json({
 			users: users,
 		});

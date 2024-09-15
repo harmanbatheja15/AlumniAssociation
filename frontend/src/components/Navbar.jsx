@@ -45,15 +45,15 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 						</li>
 						<li>
 							<Link
-								to='/'
+								to='/alumniDirectory'
 								className='text-sm font-semibold text-gray-800 hover:text-gray-900'
 							>
-								About
+								Alumni Directory
 							</Link>
 						</li>
 						<li>
 							<a
-								href='#contact'
+								href='/#contact'
 								className='text-sm font-semibold text-gray-800 hover:text-gray-900'
 							>
 								Contact
@@ -157,15 +157,15 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 											</span>
 										</Link>
 										<Link
-											to='/'
+											to='/alumniDirectory'
 											className='-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-gray-50'
 										>
 											<span className='ml-3 text-base font-medium text-gray-900'>
-												About
+												Alumni Directory
 											</span>
 										</Link>
 										<Link
-											to='/'
+											to='/#contact'
 											className='-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-gray-50'
 										>
 											<span className='ml-3 text-base font-medium text-gray-900'>

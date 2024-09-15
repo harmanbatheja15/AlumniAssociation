@@ -21,10 +21,10 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to='/'
+										to='/alumniDirectory'
 										className='hover:text-blue-300 transition duration-300'
 									>
-										About Us
+										Alumni Directory
 									</Link>
 								</li>
 								<li>
@@ -37,7 +37,7 @@ const Footer = () => {
 								</li>
 								<li>
 									<a
-										href='#contact'
+										href='/#contact'
 										className='hover:text-blue-300 transition duration-300'
 									>
 										Contact
