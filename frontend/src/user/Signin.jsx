@@ -26,6 +26,7 @@ const Signin = ({ setIsAuthenticated }) => {
 	
 			alert('Signin successful!');
 			setIsAuthenticated(true);
+			localStorage.setItem('isAuthenticated', true);
 	
 			// Log the user and existence flags for debugging
 			console.log('User:', user);

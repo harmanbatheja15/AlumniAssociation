@@ -15,9 +15,9 @@ const AddProfile = () => {
 
 	const navigate = useNavigate();
 
-	if(!user) {
+	if (!user) {
 		navigate('/signin');
-	} else if(user.profileExists) {
+	} else if (user.profileExists) {
 		navigate('/profile');
 	}
 
@@ -45,28 +45,7 @@ const AddProfile = () => {
 			.then((res) => {
 				setLoading(false);
 				alert('Information added successfully!');
-				if (user) {
-					if (user?.role === 'STUDENT' || user?.role === 'ALUMNI') {
-						if (user?.studentExists) {
-							console.log('Navigating to /profile');
-							navigate('/profile');
-						} else {
-							console.log('Navigating to /addStudent');
-							navigate('/addStudent');
-						}
-					} else if (user?.role === 'FACULTY') {
-						if (user?.facultyExists) {
-							console.log('Navigating to /profile');
-							navigate('/profile');
-						} else {
-							console.log('Navigating to /addFaculty');
-							navigate('/addFaculty');
-						}
-					} else if (user?.role === 'ADMIN') {
-						console.log('Navigating to /profile');
-						navigate('/profile');
-					}
-				}
+				navigate('/profile');
 			})
 			.catch((err) => {
 				console.log(err);
@@ -234,7 +213,7 @@ const AddProfile = () => {
 										className='inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80'
 									>
 										{loading ? (
-											<div className="w-7 h-7 rounded-full animate-spin border-4 border-solid border-blue-500 border-t-transparent shadow-md"></div>
+											<div className='w-7 h-7 rounded-full animate-spin border-4 border-solid border-blue-500 border-t-transparent shadow-md'></div>
 										) : (
 											<>
 												Submit{' '}

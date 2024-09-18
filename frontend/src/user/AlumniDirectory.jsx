@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useStore } from '../store';
 
 const AlumniDirectory = () => {
+	const { user } = useStore();
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -47,30 +49,36 @@ const AlumniDirectory = () => {
 						</div>
 					) : (
 						<div className='flex flex-wrap -mx-1 lg:-mx-4 w-full'>
-							{users.map((alumni) => (
+							{users.map((user) => (
 								<div
 									className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 flex items-center justify-center'
-									key={alumni?.id}
+									key={user?.id}
 								>
-									<Link to='/'>
+									<Link to=''>
 										<div className='flex flex-col overflow-hidden rounded-lg shadow-lg bg-white'>
 											<img
 												alt='Placeholder'
 												className='block w-full h-[300px] object-cover'
-												src={alumni?.image || `https://ui-avatars.com/api/?name=${alumni?.name}&background=ccc&color=fff`}
+												src={user?.image || `https://ui-avatars.com/api/?name=${user?.name}&background=ccc&color=fff`}
 											/>
 											<div className="p-4 space-y-3">
 												<div className='flex flex-col flex-1'>
 													<h1 className='text-lg font-semibold'>
-														{alumni?.name}
+														{user?.name}
 													</h1>
 												</div>
 												<div className='flex flex-col flex-1 space-y-1'>
 													<p className='text-grey-darker text-sm'>
-														{alumni?.role}, {alumni?.student?.joiningYear} - {alumni?.student?.passingYear}
+														{user && (user?.role === 'STUDENT' || user?.role === 'ALUMNI') && (
+															user?.role + ', ' + user?.student?.joiningYear + ' - ' + user?.student?.passingYear
+														)}
+														{user && user?.role === 'FACULTY' && (
+															user?.role + ', ' + user?.faculty?.joiningYear + ' - ' + user?.faculty?.leftYear
+														)}
 													</p>
 													<p className='text-grey-darker text-sm'>
-														{alumni?.student?.branch}
+														{user?.student && user?.student?.branch}
+														{user?.faculty && user?.faculty?.department}
 													</p>
 												</div>
 											</div>

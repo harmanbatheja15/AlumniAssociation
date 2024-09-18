@@ -12,6 +12,7 @@ import AddFacultyDetails from './user/AddFacultyDetails';
 import Profile from './user/Profile2';
 import Footer from './components/Footer';
 import AlumniDirectory from './user/AlumniDirectory';
+import NewsEvents from './user/NewsEvents';
 
 const App = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,6 +39,7 @@ const App = () => {
 					<Route path='/addFaculty' element={isAuthenticatedFunc() ? <AddFacultyDetails /> : <Navigate to='/signin' />} />
 					<Route path='/profile' element={isAuthenticatedFunc() ? <Profile /> : <Navigate to='/signin' />} />
 					<Route path='/alumniDirectory' element={<AlumniDirectory />} />
+					<Route path='/news&events' element={<NewsEvents />} />
 				</Routes>
 				<Footer />
 			</BrowserRouter>

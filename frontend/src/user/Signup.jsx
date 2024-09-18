@@ -185,6 +185,7 @@ const Signup = () => {
 												className='flex rounded-md border border-gray-300 bg-transparent px-3 py-2 mr-1 text-sm placeholder:text-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50'
 												type='radio'
 												name='phoneVisibility'
+												id='public'
 												value='PUBLIC'
 												defaultChecked
 												onChange={(e) =>
@@ -193,13 +194,14 @@ const Signup = () => {
 													)
 												}
 											></input>
-											Public
+											<label htmlFor="public">Public</label>
 										</div>
 										<div className='flex'>
 											<input
 												className='flex rounded-md border border-gray-300 bg-transparent px-3 py-2 mr-1 text-sm placeholder:text-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50'
 												type='radio'
 												name='phoneVisibility'
+												id='private'
 												value='PRIVATE'
 												onChange={(e) =>
 													setPhoneVisibility(
@@ -207,7 +209,7 @@ const Signup = () => {
 													)
 												}
 											></input>
-											Private
+											<label htmlFor="private">Private</label>
 										</div>
 									</div>
 								</div>

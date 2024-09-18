@@ -9,6 +9,7 @@ const AddStudentDetails = () => {
 	const [joiningYear, setJoiningYear] = useState();
 	const [passingYear, setPassingYear] = useState();
 	const [rollNo, setRollNumber] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -198,11 +199,17 @@ const AddStudentDetails = () => {
 										type='submit'
 										className='inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80'
 									>
-										Submit{' '}
-										<ArrowRight
-											className='ml-2'
-											size={16}
-										/>
+										{loading ? (
+											<div className="w-7 h-7 rounded-full animate-spin border-4 border-solid border-blue-500 border-t-transparent shadow-md"></div>
+										) : (
+											<>
+												Submit{' '}
+												<ArrowRight
+													className='ml-2'
+													size={16}
+												/>
+											</>
+										)}
 									</button>
 								</div>
 							</div>
