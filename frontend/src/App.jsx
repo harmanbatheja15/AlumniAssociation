@@ -9,7 +9,7 @@ import Signin from './user/Signin';
 import AddProfile from './user/AddProfile';
 import AddStudentDetails from './user/AddStudentDetails';
 import AddFacultyDetails from './user/AddFacultyDetails';
-import Profile from './user/Profile2';
+import Profile from './user/Profile';
 import Footer from './components/Footer';
 import AlumniDirectory from './user/AlumniDirectory';
 import NewsEvents from './user/NewsEvents';

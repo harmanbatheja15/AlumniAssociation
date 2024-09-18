@@ -77,13 +77,11 @@ router.put(
 router.post(
 	'/education',
 	userMiddleware,
-	roleMiddleware(['ALUMNI', 'ADMIN']),
 	addEducation
 );
 router.put(
-	'/education',
+	'/education/:id',
 	userMiddleware,
-	roleMiddleware(['ALUMNI', 'ADMIN']),
 	updateEducation
 );
 
@@ -94,7 +92,7 @@ router.put('/socialMedia', userMiddleware, updateSocialMedia);
 
 // Work Experience
 router.post('/workExperience', userMiddleware, addWorkExperience);
-router.put('/workExperience', userMiddleware, updateWorkExperience);
+router.put('/workExperience/:id', userMiddleware, updateWorkExperience);
 
 // Get all users
 router.get('/users', userMiddleware, getAllUsers);

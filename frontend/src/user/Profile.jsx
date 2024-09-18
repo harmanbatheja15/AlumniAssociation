@@ -1,54 +1,99 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Avatar from 'react-avatar';
-import { FaFacebook } from 'react-icons/fa';
-import { FaInstagram } from 'react-icons/fa';
-import { FaLinkedin } from 'react-icons/fa';
-import { FaSquareXTwitter } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import {
+	FaLinkedin,
+	FaTwitter,
+	FaFacebook,
+	FaInstagram,
+	FaLock,
+	FaPhoneAlt,
+	FaGraduationCap,
+	FaBriefcase,
+	FaUser,
+} from 'react-icons/fa';
+import { IoShareSocial } from "react-icons/io5";
+import { FaLocationDot } from 'react-icons/fa6';
+import { MdEdit, MdEmail } from 'react-icons/md';
+import { PiGenderMaleBold } from 'react-icons/pi';
+import { SlCalender } from 'react-icons/sl';
+import { GiBigDiamondRing } from 'react-icons/gi';
+import EditAboutMe from '../components/EditAboutMe';
+import { useStore } from '../store';
+import EditSocialMedia from '../components/EditSocialMedia';
+import EditInformation from '../components/EditInformation';
+import AddEducation from '../components/AddEducation';
+import AddWorkExperience from '../components/AddWorkExperience';
+import EditProfile from '../components/EditProfile';
+import EditWorkExperience from '../components/EditWorkExperience';
+import EditFaculty from '../components/EditFaculty';
+import EditStudent from '../components/EditStudent';
+import EditEducation from '../components/EditEducation';
+
+const Button = ({ icon, label, onClick }) => (
+	<button
+		onClick={onClick}
+		className='flex items-center justify-center px-4 py-2 bg-white text-blue-600 rounded-full shadow-md hover:bg-blue-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+		aria-label={label}
+	>
+		{icon}
+		<span className='ml-2'>{label}</span>
+	</button>
+);
 
 const Profile = () => {
-	const [user, setUser] = useState(null);
+	const {
+		user,
+		updateUser,
+		aboutMe,
+		updateAboutMe,
+		socialMedia,
+		updateSocialMedia,
+	} = useStore();
+	const [editProfileOpen, setEditProfileOpen] = useState(false);
+	const [editInformationOpen, setEditInformationOpen] = useState(false);
+	const [editSocialMediaOpen, setEditSocialMediaOpen] = useState(false);
+	const [editAboutMeOpen, setEditAboutMeOpen] = useState(false);
+	const [addEducationOpen, setAddEducationOpen] = useState(false);
+	const [addWorkExperienceOpen, setAddWorkExperienceOpen] = useState(false);
+	const [editWorkExperienceOpen, setEditWorkExperienceOpen] = useState(false);
+	const [editFacultyOpen, setEditFacultyOpen] = useState(false);
+	const [editStudentOpen, setEditStudentOpen] = useState(false);
+	const [editEducationOpen, setEditEducationOpen] = useState(false);
+	const [selectedEducation, setSelectedEducation] = useState(null);
+	const [workExperienceDetails, setWorkExperienceDetails] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		try {
-			axios
-				.get('http://localhost:3000/api/user/profile', {
-					withCredentials: true,
-				})
-				.then((response) => {
-					const { user } = response.data;
-					setUser(user);
-				});
-		} catch (error) {
-			console.log('Profile fetch failed! ', error);
-		}
-	}, []);
+		const fetchUserProfile = async () => {
+			try {
+				setLoading(true);
+				const response = await axios.get(
+					'http://localhost:3000/api/user/profile',
+					{
+						withCredentials: true,
+					}
+				);
+				const { user } = response.data;
+				updateUser(user);
+				updateAboutMe(user?.profile?.about);
+				updateSocialMedia(user?.socialMedia || {});
+				setLoading(false);
+				console.log('USER: ', user);
+			} catch (error) {
+				console.log('Profile fetch failed! ', error);
+			}
+		};
+		fetchUserProfile();
+	}, [updateUser, updateSocialMedia]);
 
-	if (!user) {
+	if (loading) {
 		return (
 			<>
-				<div className='absolute top-1/2 left-1/2 -mt-4 -ml-2 h-8 w-4 text-indigo-700'>
-					<div className='absolute z-10 -ml-2 h-8 w-8 animate-bounce'>
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							className='animate-spin'
-							fill='currentColor'
-							stroke='currentColor'
-							strokeWidth='0'
-							viewBox='0 0 16 16'
-						>
-							<path d='M8 0c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zM8 4c2.209 0 4 1.791 4 4s-1.791 4-4 4-4-1.791-4-4 1.791-4 4-4zM12.773 12.773c-1.275 1.275-2.97 1.977-4.773 1.977s-3.498-0.702-4.773-1.977-1.977-2.97-1.977-4.773c0-1.803 0.702-3.498 1.977-4.773l1.061 1.061c0 0 0 0 0 0-2.047 2.047-2.047 5.378 0 7.425 0.992 0.992 2.31 1.538 3.712 1.538s2.721-0.546 3.712-1.538c2.047-2.047 2.047-5.378 0-7.425l1.061-1.061c1.275 1.275 1.977 2.97 1.977 4.773s-0.702 3.498-1.977 4.773z'></path>
-						</svg>
+				<div className='flex items-center justify-center min-h-screen bg-white'>
+					<div className='flex flex-col'>
+						<div className='w-12 h-12 rounded-full animate-spin border-4 border-solid border-blue-500 border-t-transparent shadow-md'></div>
 					</div>
-					<div
-						className='absolute top-4 h-5 w-4 animate-bounce border-l-2 border-gray-200'
-						style={{rotate: '-90deg'}}
-					></div>
-					<div
-						className='absolute top-4 h-5 w-4 animate-bounce border-r-2 border-gray-200'
-						style={{rotate:' 90deg'}}
-					></div>
 				</div>
 			</>
 		);
@@ -64,207 +109,471 @@ const Profile = () => {
 
 	return (
 		<>
-			<div className='bg-white md:mx-auto rounded shadow-xl w-full md:w-1/2 overflow-hidden'>
-				<div className='h-[140px] bg-gradient-to-r from-cyan-500 to-blue-500'></div>
-				<div className='px-5 py-2 flex flex-col gap-3 pb-6'>
-					<div className='h-[105px] shadow-md w-[105px] rounded-full border-4 overflow-hidden -mt-14 border-white'>
-						{/* <img
-							src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
-							className='w-full h-full rounded-full object-center object-cover'
-						/> */}
-						<Avatar name={user.name} />
-					</div>
-					<div className=''>
-						<h3 className='text-xl text-slate-900 relative font-bold leading-6'>
-							{user.name}
-						</h3>
-						<p className='text-sm text-gray-600'>{user.role}</p>
-						<p className='text-sm text-gray-600'>
-							{user.email}
-							{user.phoneVisibility === 'PUBLIC'
-								? ` · ${user.phone}`
-								: ''}
-						</p>
-						<div className='flex mt-2'>
-							{user?.socialMedia?.facebook && (
-								<Link
-									to={user?.socialMedia?.facebook}
-									target='_blank'
-								>
-									<FaFacebook size={24} className='mr-1' />
-								</Link>
-							)}
-							{user?.socialMedia?.instagram && (
-								<Link
-									to={user?.socialMedia?.instagram}
-									target='_blank'
-								>
-									<FaInstagram size={24} className='mx-1' />
-								</Link>
-							)}
-							{user?.socialMedia?.linkedIn && (
-								<Link
-									to={user?.socialMedia?.linkedIn}
-									target='_blank'
-								>
-									<FaLinkedin size={24} className='mx-1' />
-								</Link>
-							)}
-							{user?.socialMedia?.twitter && (
-								<Link
-									to={user?.socialMedia?.twitter}
-									target='_blank'
-								>
-									<FaSquareXTwitter
-										size={24}
-										className='mx-1'
-									/>
-								</Link>
-							)}
+			<div className='w-full'>
+				{/* Banner */}
+				{(user?.role === 'STUDENT' || 'ALUMNI' ? !user?.student || !user?.profile || !user?.education || !user?.workExperience || !user?.socialMedia : !user?.faculty || !user?.profile || !user?.education || !user?.workExperience || !user?.socialMedia) &&
+					<div className='w-full bg-gray-500 text-white p-4 md:p-6 shadow-lg z-50'>
+						<div className='container mx-auto'>
+							<div className='flex flex-col md:flex-row items-center justify-between'>
+								<div className='mb-4 md:mb-0'>
+									<h2 className='text-xl md:text-2xl font-bold mb-2'>
+										Complete Your Profile
+									</h2>
+									<p className='text-sm md:text-base'>
+										Enhance your experience by adding more
+										information to your profile!
+									</p>
+								</div>
+								<div className='flex flex-wrap gap-2 md:gap-4'>
+									{!user?.profile && (
+										<Button
+											icon={<FaUser />}
+											label='Complete Profile'
+											onClick={() => {}}
+										/>
+									)}
+									{!user?.student &&
+										(user?.role === 'STUDENT' ||
+											user?.role === 'ALUMNI') && (
+											<Button
+												icon={<FaUser />}
+												label='Add Student Details'
+											/>
+										)}
+									{!user?.faculty && user?.role === 'FACULTY' && (
+										<Link to='/addFaculty'>
+											<Button
+												icon={<FaUser />}
+												label='Add Faculty Details'
+											/>
+										</Link>
+									)}
+									{user?.education?.length === 0 && (
+										<Button
+											icon={<FaGraduationCap />}
+											label='Add Education'
+											onClick={() =>
+												setAddEducationOpen(true)
+											}
+										/>
+									)}
+									{user?.role === 'ALUMNI' && user?.workExperience?.length === 0 && (
+										<Button
+											icon={<FaBriefcase />}
+											label='Add Work Experience'
+											onClick={() =>
+												setAddWorkExperienceOpen(true)
+											}
+										/>
+									)}
+									{user?.socialMedia?.linkedin === '' &&
+										user?.socialMedia?.instagram === '' &&
+										user?.socialMedia?.twitter === '' &&
+										user?.socialMedia?.facebook === '' && (
+											<Button
+												icon={<IoShareSocial />}
+												label='Add Social Media'
+												onClick={() =>
+													setEditSocialMediaOpen(true)
+												}
+											/>
+										)}
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className='flex gap-2'>
-						<button
-							type='button'
-							className='inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded border border-gray-200 bg-white px-3 py-2 mb-3 text-sm font-medium text-gray-800 transition hover:border-gray-300 active:bg-white hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300'
-						>
-							Send Message
-						</button>
-					</div>
-					<h4 className='text-md font-medium leading-3'>About</h4>
-					<p className='text-sm text-stone-500 mb-3'>
-						{user.profile.about}
-					</p>
-					{/* General Information */}
-					<h4 className='text-md font-medium leading-3'>
-						General Information
-					</h4>
-					<div className='flex flex-col gap-3 mb-3'>
-						{user?.profile && (
-							<div className='flex items-center gap-3 px-2 py-3 bg-white rounded border w-full'>
-								<div className='leading-2'>
-									<p className='text-sm text-slate-700'>
-										<span className='font-bold'>
-											Gender:{' '}
-										</span>
-										{user?.profile.gender}
+				}
+
+				<div className='xl:px-60 py-10 p-4 bg-gray-100 min-h-screen'>
+					<div className='flex flex-col md:flex-row gap-4'>
+						{/* Left Column */}
+						<div className='md:w-1/3 space-y-4'>
+							{/* Profile Picture and Basic Info */}
+							<div className='bg-white rounded-lg shadow-md p-6 relative'>
+								<div className='flex items-center justify-end'>
+									<button
+										className='w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm'
+										onClick={() => setEditProfileOpen(true)}
+									>
+										Edit
+									</button>
+								</div>
+								<div className='flex flex-col items-center'>
+									<img
+										src={
+											user?.profile?.photo ||
+											`https://ui-avatars.com/api/?name=${user?.name}&background=ccc&color=fff`
+										}
+										alt='Profile'
+										className='w-32 h-32 rounded-full mb-4 object-cover'
+									/>
+									<h1 className='text-2xl font-bold text-center mb-2'>
+										{user?.name}
+									</h1>
+									<p className='text-gray-600 text-center mb-2'>
+										{user?.role}
 									</p>
-									<p className='text-sm text-slate-700'>
-										<span className='font-bold'>
-											Marital Status:{' '}
-										</span>
-										{user?.profile.maritalStatus}
+									<p className='text-gray-600 text-center mb-2'>
+										{(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && (user?.student?.joiningYear + ' - ' + user?.student?.passingYear)}
+										{user?.role === 'FACULTY' && (user?.faculty && user?.faculty?.joiningYear + ' - ' + user?.faculty?.leftYear)}
 									</p>
-									<p className='text-sm text-slate-700'>
-										<span className='font-bold'>
-											Location:{' '}
-										</span>
-										{user?.profile.location}
-									</p>
-									<p className='text-sm text-slate-700'>
-										<span className='font-bold'>
-											Date of birth:{' '}
-										</span>
-										{formatDate(user?.profile.dob)}
-									</p>
+									{/* {(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && (
+										<p className='text-gray-600 text-center mb-2'>
+											<span className='font-semibold'>
+												Roll Number -
+											</span>{' '}
+											{user?.student?.rollNo}
+										</p>
+									)} */}
 								</div>
 							</div>
-						)}
-					</div>
-					{/* Education */}
-					<h4 className='text-md font-medium leading-3'>Education</h4>
-					<div className='flex flex-col gap-3 mb-3'>
-						{user?.education?.map((education, index) => (
-							<div
-								key={index}
-								className='flex items-center gap-3 px-2 py-3 bg-white rounded border w-full'
-							>
-								<div className='leading-2'>
-									<p className='text-sm font-normal text-slate-700'>
-										{education.institute}
-									</p>
-									<p className='font-bold text-slate-700'>
-										{education.branch}
-									</p>
-									<p className='text-sm font-normal text-slate-700'>
-										{education.degree}
-									</p>
-									<span className='text-xs text-slate-600'>
-										{education.joiningYear} -{' '}
-										{education.passingYear}
+
+							{/* Ohter Details */}
+							<div className='bg-white rounded-lg shadow-md p-6'>
+								<h2 className='flex items-center justify-between text-xl font-semibold mb-4'>
+									Information:
+									<button
+										className='w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm'
+										onClick={() =>
+											setEditInformationOpen(true)
+										}
+									>
+										Edit
+									</button>
+								</h2>
+								<p className='flex items-center text-gray-700'>
+									<span className='mr-2'>
+										<MdEmail />
 									</span>
+									<span className='break-all'>
+										{user?.email}
+									</span>
+								</p>
+								<p className='flex items-center text-gray-700'>
+									<span className='mr-2'>
+										<FaPhoneAlt />
+									</span>
+									{user?.phoneVisibility === 'PUBLIC' ? (
+										<>{user?.phone}</>
+									) : (
+										<>
+											<span className='mr-2'>
+												{user?.phone}
+											</span>
+											<FaLock />
+										</>
+									)}
+								</p>
+								<p className='flex items-center text-gray-700'>
+									<span className='mr-2'>
+										<SlCalender />
+									</span>
+									{formatDate(user?.profile?.dob)}
+								</p>
+								<p className='flex items-center text-gray-700'>
+									<span className='mr-2'>
+										<PiGenderMaleBold />
+									</span>
+									{user?.profile?.gender}
+								</p>
+								<p className='flex items-center text-gray-700'>
+									<span className='mr-2'>
+										<GiBigDiamondRing />
+									</span>
+									{user?.profile?.maritalStatus}
+								</p>
+								<p className='flex items-center text-gray-700'>
+									<span className='mr-2'>
+										<FaLocationDot />
+									</span>
+									{user?.profile?.location}
+								</p>
+							</div>
+
+							{/* Social Media Links */}
+							<div className='bg-white rounded-lg shadow-md p-6'>
+								<h2 className='flex items-center justify-between text-xl font-semibold mb-4'>
+									Connect With Me
+									<button
+										className='w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm'
+										onClick={() =>
+											setEditSocialMediaOpen(true)
+										}
+									>
+										Edit
+									</button>
+								</h2>
+								<div className='flex space-x-4'>
+									{socialMedia?.linkedin !== '' ||
+									socialMedia?.instagram !== '' ||
+									socialMedia?.twitter !== '' ||
+									socialMedia?.facebook !== '' ? (
+										<>
+											{socialMedia?.linkedin && (
+												<a
+													href={`https://linkedin.com/in/${socialMedia?.linkedin}`}
+													target='_blank'
+													rel='noopener noreferrer'
+													className='text-gray-600 hover:text-blue-500 transition-colors'
+												>
+													<FaLinkedin size={24} />
+												</a>
+											)}
+											{socialMedia?.instagram && (
+												<a
+													href={`https://instagram.com/${socialMedia?.instagram}`}
+													target='_blank'
+													rel='noopener noreferrer'
+													className='text-gray-600 hover:text-blue-500 transition-colors'
+												>
+													<FaInstagram size={24} />
+												</a>
+											)}
+											{socialMedia?.twitter && (
+												<a
+													href={`https://x.com/${socialMedia?.twitter}`}
+													target='_blank'
+													rel='noopener noreferrer'
+													className='text-gray-600 hover:text-blue-500 transition-colors'
+												>
+													<FaTwitter size={24} />
+												</a>
+											)}
+											{socialMedia?.facebook && (
+												<a
+													href={`https://facebook.com/${socialMedia?.facebook}`}
+													target='_blank'
+													rel='noopener noreferrer'
+													className='text-gray-600 hover:text-blue-500 transition-colors'
+												>
+													<FaFacebook size={24} />
+												</a>
+											)}
+										</>
+									) : (
+										<p className='text-gray-600'>
+											No social media links found!
+										</p>
+									)}
 								</div>
 							</div>
-						))}
-						{(user.role === 'STUDENT' ||
-							user.role === 'ALUMNI' ||
-							user.role === 'ADMIN') &&
-							user?.student && (
-								<div className='flex items-center gap-3 px-2 py-3 bg-white rounded border w-full'>
-									<div className='leading-2'>
-										<p className='text-sm font-normal text-slate-700'>
-											Thapar Polytechnic College
-										</p>
-										<p className='font-bold text-slate-700'>
-											{user?.student.branch}
-										</p>
-										<p className='text-sm font-normal text-slate-700'>
-											{user?.student.course}
-										</p>
-										<span className='text-xs text-slate-600'>
-											{user?.student.joiningYear} -{' '}
-											{user?.student.passingYear}
-										</span>
+						</div>
+
+						{/* Right Column */}
+						<div className='md:w-2/3 space-y-4'>
+							{/* About Me Section */}
+							<div className='bg-white rounded-lg shadow-md p-6'>
+								<h2 className='flex items-center justify-between text-xl font-semibold mb-4'>
+									About Me
+									<button
+										className='w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm'
+										onClick={() => setEditAboutMeOpen(true)}
+									>
+										Edit
+									</button>
+								</h2>
+								<p
+									className='text-gray-700'
+									style={{ whiteSpace: 'pre-wrap' }}
+								>
+									{aboutMe}
+								</p>
+							</div>
+							{/* Education Details */}
+							<div className='bg-white rounded-lg shadow-md p-6'>
+								<h2 className='flex items-center justify-between text-xl font-semibold mb-4'>
+									Education
+									<button
+										className='w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm'
+										onClick={() =>
+											setAddEducationOpen(true)
+										}
+									>
+										Add
+									</button>
+								</h2>
+								{user?.education?.slice().reverse().map((edu) => (
+									<div
+										key={edu.id}
+										className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'
+									>
+										<div className=''>
+											<h3 className='font-semibold'>
+												{edu.institute}
+											</h3>
+											<p className='text-gray-600'>
+												{edu.degree}
+											</p>
+											<p className='text-gray-600'>
+												{edu.branch}
+											</p>
+											<p className='text-gray-500'>
+												{edu.joiningYear} -{' '}
+												{edu.passingYear}
+											</p>
+										</div>
+										<div className=''>
+											<button
+												className='text-black transition-colors'
+												onClick={() => {
+													setEditEducationOpen(true)
+													setSelectedEducation(edu)
+												}}
+												aria-label={`Edit ${edu.degree} at ${edu.institute}`}
+											>
+												<MdEdit size={24} />
+											</button>
+										</div>
 									</div>
-								</div>
-							)}
-					</div>
-					{/* Work Experience */}
-					<h4 className='text-md font-medium leading-3'>
-						Work Experience
-					</h4>
-					<div className='flex flex-col gap-3'>
-						{user?.workExperience?.map((workexp, index) => (
-							<div
-								key={index}
-								className='flex items-center gap-3 px-2 py-3 bg-white rounded border w-full'
-							>
-								<div className='leading-2'>
-									<p className='text-sm font-normal text-slate-700'>
-										{workexp.company}
-									</p>
-									<p className='font-bold text-slate-700'>
-										{workexp.jobTitle}
-									</p>
-									<span className='text-xs text-slate-600'>
-										{workexp.joiningYear} -{' '}
-										{workexp.leftYear}
-									</span>
-								</div>
+								))}
+								{(user?.role === 'STUDENT' ||
+									user?.role === 'ALUMNI') &&
+									user?.student && (
+										<div className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'>
+											<div className=''>
+												<h3 className='font-semibold'>
+													{user?.student?.institute || 'Thapar Polytechnic College'}
+												</h3>
+												<p className='text-gray-600'>
+													{user?.student?.course}
+												</p>
+												<p className='text-gray-600'>
+													{user?.student?.branch}
+												</p>
+												<p className='text-gray-500'>
+													{user?.student?.joiningYear}{' '}
+													-{' '}
+													{user?.student?.passingYear} Batch
+												</p>
+												<p className='text-gray-600'>
+													<span className='font-semibold'>
+														Roll Number - {' '}
+													</span>
+													{user?.student?.rollNo}
+												</p>
+											</div>
+											<div className=''>
+												<button
+													className='text-black transition-colors'
+													onClick={() =>
+														setEditStudentOpen(true)
+													}
+												>
+													<MdEdit size={24} />
+												</button>
+											</div>
+										</div>
+									)}
 							</div>
-						))}
-						{user.role === 'FACULTY' ||
-						(user.role === 'ALUMNI' && user?.faculty) ? (
-							<div className='flex items-center gap-3 px-2 py-3 bg-white rounded border w-full'>
-								<div className='leading-2'>
-									<p className='text-sm font-normal text-slate-700'>
-										{user?.faculty.department}
-									</p>
-									<p className='font-bold text-slate-700'>
-										{user?.faculty.jobTitle}
-									</p>
-									<span className='text-xs text-slate-600'>
-										{user?.faculty.joiningYear} -{' '}
-										{user?.faculty.leftYear}
-									</span>
-								</div>
+
+							{/* Work Experience */}
+							<div className='bg-white rounded-lg shadow-md p-6'>
+								<h2 className='flex items-center justify-between text-xl font-semibold mb-4'>
+									Work Experience
+									<button
+										className='w-auto rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:text-sm'
+										onClick={() =>
+											setAddWorkExperienceOpen(true)
+										}
+									>
+										Add
+									</button>
+								</h2>
+								{user?.role === 'FACULTY' && user?.faculty && (
+									<div className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'>
+										<div className=''>
+											<h3 className='font-semibold'>
+												{user?.faculty?.jobTitle}
+											</h3>
+											<p className='text-gray-600'>
+												{user?.faculty?.department}
+											</p>
+											<p className='text-gray-500'>
+												{user?.faculty?.joiningYear} -{' '}
+												{user?.faculty?.leftYear}
+											</p>
+										</div>
+										<div className=''>
+											<button className='text-black transition-colors' onClick={() => setEditFacultyOpen(true)}>
+												<MdEdit size={24} />
+											</button>
+										</div>
+									</div>
+								)}
+								{user?.workExperience.map((exp) => (
+									<div
+										key={exp.id}
+										className='flex items-start justify-between mb-4 last:mb-0 bg-gray-50 rounded-md p-4'
+									>
+										<div className=''>
+											<h3 className='font-semibold'>
+												{exp.jobTitle}
+											</h3>
+											<p className='text-gray-600'>
+												{exp.company}
+											</p>
+											<p className='text-gray-500'>
+												{exp.joiningYear} -{' '}
+												{exp.leftYear}
+											</p>
+										</div>
+										<div className=''>
+											<button
+												className='text-black transition-colors'
+												onClick={() => {
+													setEditWorkExperienceOpen(true)
+													setWorkExperienceDetails(exp);
+												}}
+											>
+												<MdEdit size={24} />
+											</button>
+										</div>
+									</div>
+								))}
 							</div>
-						) : (
-							''
-						)}
+						</div>
 					</div>
 				</div>
 			</div>
+			{editProfileOpen && (
+				<EditProfile setEditProfileOpen={setEditProfileOpen} />
+			)}
+			{editInformationOpen && (
+				<EditInformation
+					setEditInformationOpen={setEditInformationOpen}
+				/>
+			)}
+			{editSocialMediaOpen && (
+				<EditSocialMedia
+					setEditSocialMediaOpen={setEditSocialMediaOpen}
+				/>
+			)}
+			{editAboutMeOpen && (
+				<EditAboutMe setEditAboutMeOpen={setEditAboutMeOpen} />
+			)}
+			{addEducationOpen && (
+				<AddEducation setAddEducationOpen={setAddEducationOpen} />
+			)}
+			{addWorkExperienceOpen && (
+				<AddWorkExperience
+					setAddWorkExperienceOpen={setAddWorkExperienceOpen}
+				/>
+			)}
+			{editWorkExperienceOpen && (
+				<EditWorkExperience
+					setEditWorkExperienceOpen={setEditWorkExperienceOpen}
+					workExperienceDetails={workExperienceDetails}
+				/>
+			)}
+			{editFacultyOpen && (
+				<EditFaculty setEditFacultyOpen={setEditFacultyOpen} />
+			)}
+			{editStudentOpen && (
+				<EditStudent setEditStudentOpen={setEditStudentOpen} />
+			)}
+			{editEducationOpen && (
+				<EditEducation setEditEducationOpen={setEditEducationOpen} educationDetails={selectedEducation} />
+			)}
 		</>
 	);
 };
