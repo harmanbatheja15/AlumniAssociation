@@ -70,11 +70,11 @@ const Chat = () => {
 							<AiOutlineUser className='text-gray-500 mr-2' />
 							<span className='font-medium'>{userDetails?.name}</span>
 						</li>
-				</ul>
+					</ul>
 				</div>
 				<div className='flex-1 flex flex-col'>
-					<div className='bg-white border-b border-gray-300 p-4 flex items-center justify-between'>
-						<h1 className='text-2xl font-bold'>John Doe</h1>
+					<div className='bg-white border-b border-gray-300 p-4 flex items-center'>
+						<h1 className='text-2xl font-bold mr-2'>{userDetails?.name}</h1>({userDetails?.role})
 					</div>
 					<div className='flex-1 overflow-y-auto p-4' aria-live='polite'>
 						{messages.map((message) => (
