@@ -8,6 +8,7 @@ export const createAppSlice = (set) => ({
         linkedin: '',
         twitter: '',
     },
+	userDetails: [],
 
 	updateIsAuthenticated(payload) {
 		set({ isAuthenticated: payload });
@@ -20,5 +21,8 @@ export const createAppSlice = (set) => ({
 	},
 	updateSocialMedia(payload) {
 		set({ socialMedia: payload });
+	},
+	updateUserDetails(payload) {
+		set({ userDetails: payload });
 	},
 });

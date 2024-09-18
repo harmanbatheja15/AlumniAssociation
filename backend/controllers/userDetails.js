@@ -291,6 +291,14 @@ exports.getUserById = async (req, res) => {
 			where: {
 				id: parseInt(id),
 			},
+			include: {
+				profile: true,
+				student: true,
+				faculty: true,
+				education: true,
+				socialMedia: true,
+				workExperience: true,
+			},
 		});
 		res.status(200).json(user);
 	} catch (error) {

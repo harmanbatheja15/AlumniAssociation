@@ -98,6 +98,6 @@ router.put('/workExperience/:id', userMiddleware, updateWorkExperience);
 router.get('/users', userMiddleware, getAllUsers);
 
 // Get user by id
-router.get('/user/:id', userMiddleware, getUserById);
+router.get('/:id', userMiddleware, getUserById);
 
 module.exports = router;

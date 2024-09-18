@@ -4,13 +4,12 @@ import axios from 'axios';
 import { useStore } from '../store';
 
 const AlumniDirectory = () => {
-	const { user } = useStore();
 	const [users, setUsers] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		const fetchAlumnis = async () => {
+		const fetchUsers = async () => {
 			try {
 				setLoading(true);
 				const response = await axios.get(`http://localhost:3000/api/user/users`, {
@@ -25,7 +24,7 @@ const AlumniDirectory = () => {
 				console.error(err);
 			}
 		};
-		fetchAlumnis();
+		fetchUsers();
 	}, []);
 
 	return (
@@ -49,12 +48,12 @@ const AlumniDirectory = () => {
 						</div>
 					) : (
 						<div className='flex flex-wrap -mx-1 lg:-mx-4 w-full'>
-							{users.map((user) => (
+							{users?.map((user) => (
 								<div
 									className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 flex items-center justify-center'
 									key={user?.id}
 								>
-									<Link to=''>
+									<Link to={`/userDetail/${user?.id}`}>
 										<div className='flex flex-col overflow-hidden rounded-lg shadow-lg bg-white'>
 											<img
 												alt='Placeholder'
