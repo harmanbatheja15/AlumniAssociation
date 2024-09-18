@@ -109,76 +109,78 @@ const Profile = () => {
 		<>
 			<div className='w-full'>
 				{/* Banner */}
-				<div className='w-full bg-gray-500 text-white p-4 md:p-6 shadow-lg z-50'>
-					<div className='container mx-auto'>
-						<div className='flex flex-col md:flex-row items-center justify-between'>
-							<div className='mb-4 md:mb-0'>
-								<h2 className='text-xl md:text-2xl font-bold mb-2'>
-									Complete Your Profile
-								</h2>
-								<p className='text-sm md:text-base'>
-									Enhance your experience by adding more
-									information to your profile!
-								</p>
-							</div>
-							<div className='flex flex-wrap gap-2 md:gap-4'>
-								{!user?.profile && (
-									<Button
-										icon={<FaUser />}
-										label='Complete Profile'
-										onClick={() => {}}
-									/>
-								)}
-								{!user?.student &&
-									(user?.role === 'STUDENT' ||
-										user?.role === 'ALUMNI') && (
+				{(user?.role === 'STUDENT' || 'ALUMNI' ? !user?.student || !user?.profile || !user?.education || !user?.workExperience || !user?.socialMedia : !user?.faculty || !user?.profile || !user?.education || !user?.workExperience || !user?.socialMedia) &&
+					<div className='w-full bg-gray-500 text-white p-4 md:p-6 shadow-lg z-50'>
+						<div className='container mx-auto'>
+							<div className='flex flex-col md:flex-row items-center justify-between'>
+								<div className='mb-4 md:mb-0'>
+									<h2 className='text-xl md:text-2xl font-bold mb-2'>
+										Complete Your Profile
+									</h2>
+									<p className='text-sm md:text-base'>
+										Enhance your experience by adding more
+										information to your profile!
+									</p>
+								</div>
+								<div className='flex flex-wrap gap-2 md:gap-4'>
+									{!user?.profile && (
 										<Button
 											icon={<FaUser />}
-											label='Add Student Details'
+											label='Complete Profile'
+											onClick={() => {}}
 										/>
 									)}
-								{!user?.faculty && user?.role === 'FACULTY' && (
-									<Link to='/addFaculty'>
+									{!user?.student &&
+										(user?.role === 'STUDENT' ||
+											user?.role === 'ALUMNI') && (
+											<Button
+												icon={<FaUser />}
+												label='Add Student Details'
+											/>
+										)}
+									{!user?.faculty && user?.role === 'FACULTY' && (
+										<Link to='/addFaculty'>
+											<Button
+												icon={<FaUser />}
+												label='Add Faculty Details'
+											/>
+										</Link>
+									)}
+									{user?.education?.length === 0 && (
 										<Button
-											icon={<FaUser />}
-											label='Add Faculty Details'
-										/>
-									</Link>
-								)}
-								{user?.education?.length === 0 && (
-									<Button
-										icon={<FaGraduationCap />}
-										label='Add Education'
-										onClick={() =>
-											setAddEducationOpen(true)
-										}
-									/>
-								)}
-								{user?.role === 'ALUMNI' && user?.workExperience?.length === 0 && (
-									<Button
-										icon={<FaBriefcase />}
-										label='Add Work Experience'
-										onClick={() =>
-											setAddWorkExperienceOpen(true)
-										}
-									/>
-								)}
-								{user?.socialMedia?.linkedin === '' &&
-									user?.socialMedia?.instagram === '' &&
-									user?.socialMedia?.twitter === '' &&
-									user?.socialMedia?.facebook === '' && (
-										<Button
-											icon={<IoShareSocial />}
-											label='Add Social Media'
+											icon={<FaGraduationCap />}
+											label='Add Education'
 											onClick={() =>
-												setEditSocialMediaOpen(true)
+												setAddEducationOpen(true)
 											}
 										/>
 									)}
+									{user?.role === 'ALUMNI' && user?.workExperience?.length === 0 && (
+										<Button
+											icon={<FaBriefcase />}
+											label='Add Work Experience'
+											onClick={() =>
+												setAddWorkExperienceOpen(true)
+											}
+										/>
+									)}
+									{user?.socialMedia?.linkedin === '' &&
+										user?.socialMedia?.instagram === '' &&
+										user?.socialMedia?.twitter === '' &&
+										user?.socialMedia?.facebook === '' && (
+											<Button
+												icon={<IoShareSocial />}
+												label='Add Social Media'
+												onClick={() =>
+													setEditSocialMediaOpen(true)
+												}
+											/>
+										)}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				}
 
 				<div className='xl:px-60 py-10 p-4 bg-gray-100 min-h-screen'>
 					<div className='flex flex-col md:flex-row gap-4'>
@@ -210,26 +212,17 @@ const Profile = () => {
 										{user?.role}
 									</p>
 									<p className='text-gray-600 text-center mb-2'>
-										{user?.role === 'STUDENT' ||
-											(user?.role === 'ALUMNI' &&
-												user?.student?.joiningYear +
-													' - ' +
-													user?.student?.passingYear)}
-										{user?.role === 'FACULTY' &&
-											user?.faculty &&
-											user?.faculty?.joiningYear +
-												' - ' +
-												user?.faculty?.leftYear}
+										{(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && (user?.student?.joiningYear + ' - ' + user?.student?.passingYear)}
+										{user?.role === 'FACULTY' && (user?.faculty && user?.faculty?.joiningYear + ' - ' + user?.faculty?.leftYear)}
 									</p>
-									{user?.role === 'STUDENT' ||
-										(user?.role === 'ALUMNI' && (
-											<p className='text-gray-600 text-center mb-2'>
-												<span className='font-semibold'>
-													Roll Number -
-												</span>{' '}
-												{user?.student?.rollNo}
-											</p>
-										))}
+									{(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && (
+										<p className='text-gray-600 text-center mb-2'>
+											<span className='font-semibold'>
+												Roll Number -
+											</span>{' '}
+											{user?.student?.rollNo}
+										</p>
+									)}
 								</div>
 							</div>
 
@@ -491,7 +484,7 @@ const Profile = () => {
 											</p>
 										</div>
 										<div className=''>
-											<button className='text-black transition-colors'>
+											<button className='text-black transition-colors' onClick={() => setEditFacultyOpen(true)}>
 												<MdEdit size={24} />
 											</button>
 										</div>
