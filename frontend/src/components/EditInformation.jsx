@@ -3,42 +3,40 @@ import axios from 'axios';
 import { useStore } from '../store';
 
 const EditInformation = ({ setEditInformationOpen }) => {
-    const { user, updateUser } = useStore(); // Destructure updateUser from the store
-    const [profile, setProfile] = useState(user?.profile || {});
+    const { user, updateUser } = useStore();
+    const [information, setInformation] = useState(user?.profile || {});
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    // Sync local state with store state when user changes
     useEffect(() => {
-        setProfile(user?.profile || {});
+        setInformation(user?.profile || {});
     }, [user]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (loading) return; // Prevent multiple submissions
+        if (loading) return;
 
         try {
             setLoading(true);
-            setErrorMessage(''); // Reset error message
+            setErrorMessage('');
             const response = await axios.put(
                 'http://localhost:3000/api/user/profile',
                 {
-                    gender: profile?.gender,
-                    maritalStatus: profile?.maritalStatus,
-                    location: profile?.location,
-                    dob: profile?.dob,
-                    about: profile?.about || '',
+                    gender: information?.gender,
+                    maritalStatus: information?.maritalStatus,
+                    location: information?.location,
+                    dob: information?.dob,
+                    about: information?.about || '',
                 },
                 { withCredentials: true }
             );
 
-            console.log('Profile updated successfully!', response?.data);
-            // Update Zustand store with new user data
-            updateUser({ ...user, profile: response.data }); // Call updateUser to update state
-            setEditInformationOpen(false); // Close modal after successful update
+            console.log('information updated successfully!', response?.data);
+            updateUser({ ...user, profile: response.data });
+            setEditInformationOpen(false);
         } catch (error) {
-            console.error('Error while updating profile!', error);
-            setErrorMessage('Failed to update profile. Please try again.');
+            console.error('Error while updating information!', error);
+            setErrorMessage('Failed to update information. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -63,8 +61,8 @@ const EditInformation = ({ setEditInformationOpen }) => {
                                         <select
                                             id="gender"
                                             className='w-full border rounded-lg p-2'
-                                            value={profile?.gender || 'Select'}
-                                            onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                                            value={information?.gender || 'Select'}
+                                            onChange={(e) => setInformation({ ...information, gender: e.target.value })}
                                         >
                                             <option value='Select' disabled>Select</option>
                                             <option value='MALE'>Male</option>
@@ -77,8 +75,8 @@ const EditInformation = ({ setEditInformationOpen }) => {
                                         <select
                                             id="maritalStatus"
                                             className='w-full border rounded-lg p-2'
-                                            value={profile?.maritalStatus || 'Select'}
-                                            onChange={(e) => setProfile({ ...profile, maritalStatus: e.target.value })}
+                                            value={information?.maritalStatus || 'Select'}
+                                            onChange={(e) => setInformation({ ...information, maritalStatus: e.target.value })}
                                         >
                                             <option value='Select' disabled>Select</option>
                                             <option value='SINGLE'>Single</option>
@@ -92,8 +90,8 @@ const EditInformation = ({ setEditInformationOpen }) => {
                                             id="location"
                                             type='text'
                                             className='w-full border rounded-lg p-2'
-                                            value={profile?.location || ''}
-                                            onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                                            value={information?.location || ''}
+                                            onChange={(e) => setInformation({ ...information, location: e.target.value })}
                                         />
                                     </div>
                                     <div className='mt-2 text-start space-y-1 mb-4'>
@@ -102,8 +100,8 @@ const EditInformation = ({ setEditInformationOpen }) => {
                                             id="dateOfBirth"
                                             type='date'
                                             className='w-full border rounded-lg p-2'
-                                            value={profile?.dob ? profile.dob.split('T')[0] : ''}
-                                            onChange={(e) => setProfile({ ...profile, dob: e.target.value+'T00:00:00.000Z' })}
+                                            value={information?.dob ? information.dob.split('T')[0] : ''}
+                                            onChange={(e) => setInformation({ ...information, dob: e.target.value+'T00:00:00.000Z' })}
                                         />
                                     </div>
                                 </div>

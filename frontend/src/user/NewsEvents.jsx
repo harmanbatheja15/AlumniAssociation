@@ -7,7 +7,7 @@ const NewsEvents = () => {
   const [activeNewsIndex, setActiveNewsIndex] = useState(0);
   const [visibleNewsCount, setVisibleNewsCount] = useState(3);
   const [visibleEventsCount, setVisibleEventsCount] = useState(3);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const newsRef = useRef(null);
 

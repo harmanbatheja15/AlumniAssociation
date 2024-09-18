@@ -3,12 +3,44 @@ import axios from 'axios';
 import { useStore } from '../store';
 
 const EditProfile = ({ setEditProfileOpen }) => {
-	const { user } = useStore();
-	const [loading, setLoading] = useState(false);
+	const { user, updateUser } = useStore();
+    const [profile, setProfile] = useState(user || {});
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-	};
+    useEffect(() => {
+        setProfile(user || {});
+    }, [user]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (loading) return;
+
+        try {
+            setLoading(true);
+            setErrorMessage('');
+            const response = await axios.put(
+                'http://localhost:3000/api/user/signup',
+                {
+                    name: profile?.name,
+                    email: profile?.email,
+                    phone: profile?.phone,
+                    phoneVisibility: profile?.phoneVisibility,
+                    role: profile?.role,
+                },
+                { withCredentials: true }
+            );
+
+            console.log('Profile updated successfully!', response?.data);
+            updateUser({ ...user, name: response?.data?.name, email: response?.data?.email, phone: response?.data?.phone, phoneVisibility: response?.data?.phoneVisibility, role: response?.data?.role });
+            setEditProfileOpen(false);
+        } catch (error) {
+            console.error('Error while updating profile!', error);
+            setErrorMessage('Failed to update profile. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
 	return (
 		<>
@@ -31,6 +63,13 @@ const EditProfile = ({ setEditProfileOpen }) => {
 												type='text'
 												className='w-full border rounded-lg p-2'
 												placeholder=''
+												value={profile?.name}
+												onChange={(e) =>
+													setProfile({
+														...profile,
+														name: e.target.value,
+													})
+												}
 											/>
 										</div>
 										<div className='mt-2 text-start space-y-1 mb-4'>
@@ -39,6 +78,13 @@ const EditProfile = ({ setEditProfileOpen }) => {
 												type='text'
 												className='w-full border rounded-lg p-2'
 												placeholder=''
+												value={profile?.email}
+												onChange={(e) =>
+													setProfile({
+														...profile,
+														email: e.target.value,
+													})
+												}
 											/>
 										</div>
 										<div className='mt-2 text-start space-y-1 mb-4'>
@@ -49,6 +95,13 @@ const EditProfile = ({ setEditProfileOpen }) => {
 												type='text'
 												className='w-full border rounded-lg p-2'
 												placeholder=''
+												value={profile?.phone}
+												onChange={(e) =>
+													setProfile({
+														...profile,
+														phone: e.target.value,
+													})
+												}
 											/>
 										</div>
 										<div className='mt-2 text-start space-y-1 mb-4'>
@@ -63,7 +116,8 @@ const EditProfile = ({ setEditProfileOpen }) => {
 														name='phoneVisibility'
 														value='PUBLIC'
 														id='public'
-														defaultChecked
+														checked={profile?.phoneVisibility === 'PUBLIC'}
+														onChange={(e) => setProfile({ ...profile, phoneVisibility: e.target.value })}
 													></input>
 													<label htmlFor="public">Public</label>
 												</div>
@@ -74,6 +128,8 @@ const EditProfile = ({ setEditProfileOpen }) => {
 														name='phoneVisibility'
 														id='private'
 														value='PRIVATE'
+														checked={profile?.phoneVisibility === 'PRIVATE'}
+														onChange={(e) => setProfile({ ...profile, phoneVisibility: e.target.value })}
 													></input>
 													<label htmlFor="private">Private</label>
 												</div>
@@ -83,7 +139,14 @@ const EditProfile = ({ setEditProfileOpen }) => {
 											<label htmlFor=''>Role</label>
 											<select
 												className='w-full border rounded-lg p-2'
-												defaultValue={'Select'}
+												disabled
+												value={profile?.role || 'Select'}
+												onChange={(e) =>
+													setProfile({
+														...profile,
+														role: e.target.value,
+													})
+												}
 											>
 												<option value='Select' disabled>
 													Select
