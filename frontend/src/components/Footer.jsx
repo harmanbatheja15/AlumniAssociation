@@ -29,20 +29,20 @@ const Footer = () => {
 								</li>
 								<li>
 									<Link
-										to='/'
+										to='/news&events'
 										className='hover:text-blue-300 transition duration-300'
 									>
-										Events
+										News & Events
 									</Link>
 								</li>
-								<li>
+								{/* <li>
 									<a
 										href='/#contact'
 										className='hover:text-blue-300 transition duration-300'
 									>
 										Contact
 									</a>
-								</li>
+								</li> */}
 							</ul>
 						</div>
 						<div>

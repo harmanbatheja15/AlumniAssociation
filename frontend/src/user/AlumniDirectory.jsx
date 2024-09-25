@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const AlumniDirectory = () => {
 	const [users, setUsers] = useState([]);
@@ -12,7 +13,7 @@ const AlumniDirectory = () => {
 		const fetchUsers = async () => {
 			try {
 				setLoading(true);
-				const response = await axios.get(`http://localhost:3000/api/user/users`, {
+				const response = await axios.get(`${API}/user/users`, {
 					withCredentials: true,
 				});
 				setUsers(response?.data?.users);

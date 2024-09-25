@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const AddEducation = ({ setAddEducationOpen }) => {
     const { user, updateUser } = useStore();

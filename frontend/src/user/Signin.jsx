@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight } from 'lucide-react';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const Signin = ({ setIsAuthenticated }) => {
 	// const { user } = useStore();

@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { Menu, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 	const { user } = useStore();
@@ -18,7 +19,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 
 	const handleLogout = () => {
 		try {
-			axios.post(`http://localhost:3000/api/user/logout`);
+			axios.post(`${API}/user/logout`);
 			// Remove token from localStorage
 			Cookies.remove('token');
 			setIsAuthenticated(false);

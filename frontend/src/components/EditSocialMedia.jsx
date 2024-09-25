@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const EditSocialMedia = ({ setEditSocialMediaOpen }) => {
 	const { user, socialMedia, updateSocialMedia } = useStore();

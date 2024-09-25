@@ -15,24 +15,25 @@ import { PiGenderMaleBold } from 'react-icons/pi';
 import { SlCalender } from 'react-icons/sl';
 import { GiBigDiamondRing } from 'react-icons/gi';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const UserDetail = () => {
-	const { userDetails, updateUserDetails } = useStore();
+	const { user, userDetails, updateUserDetails } = useStore();
 	const [loading, setLoading] = useState(true);
 	const { id } = useParams();
-	const [user, setUser] = useState();
+	// const [user, setUser] = useState();
 
 	useEffect(() => {
 		const fetchUserProfile = async () => {
 			try {
 				setLoading(true);
 				const response = await axios.get(
-					`http://localhost:3000/api/user/${id}`,
+					`${API}/user/${id}`,
 					{
 						withCredentials: true,
 					}
 				);
-				setUser(response.data);
+				// setUser(response.data);
 				updateUserDetails(response.data);
 				setLoading(false);
 			} catch (error) {
@@ -98,14 +99,16 @@ const UserDetail = () => {
 											{userDetails?.student?.rollNo}
 										</p>
 									)} */}
-									<Link to={`/chat/${userDetails?.id}`}>
-										<button
-											type='button'
-											className='inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded border border-gray-200 bg-white px-3 py-2 mb-3 text-sm font-medium text-gray-800 transition hover:border-gray-300 active:bg-white hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300'
-										>
-											Send Message
-										</button>
-									</Link>
+									{user?.email !== userDetails?.email && (
+										<Link to={`/chat/${userDetails?.id}`}>
+											<button
+												type='button'
+												className='inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center space-x-1 rounded border border-gray-200 bg-white px-3 py-2 mb-3 text-sm font-medium text-gray-800 transition hover:border-gray-300 active:bg-white hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300'
+											>
+												Send Message
+											</button>
+										</Link>
+									)}
 								</div>
 							</div>
 

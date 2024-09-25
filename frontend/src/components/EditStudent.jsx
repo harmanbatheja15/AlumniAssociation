@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const EditStudent = ({ setEditStudentOpen }) => {
     const { user, updateUser } = useStore();
@@ -13,7 +14,6 @@ const EditStudent = ({ setEditStudentOpen }) => {
         rollNo: '',
     });
 
-    // Populate the form with existing student details
     useEffect(() => {
         if (user?.student) {
             setStudentData({
@@ -42,15 +42,14 @@ const EditStudent = ({ setEditStudentOpen }) => {
 
             // Send updated student data to the backend
             const response = await axios.put(
-                `http://localhost:3000/api/user/student`, // Adjusted endpoint
+                `${API}/user/student`,
                 studentData,
                 { withCredentials: true }
             );
 
             console.log('Student details updated successfully!', response?.data);
 
-            // Update user state in the store
-            updateUser({ ...user, student: response.data }); // Assuming you want to update the user state with new student data
+            updateUser({ ...user, student: response.data });
             setEditStudentOpen(false);
         } catch (error) {
             console.error('Error while updating student details!', error);

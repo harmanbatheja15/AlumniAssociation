@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const EditWorkExperience = ({ setEditWorkExperienceOpen, workExperienceDetails }) => {
     const { user, updateUser } = useStore();
@@ -40,7 +41,7 @@ const EditWorkExperience = ({ setEditWorkExperienceOpen, workExperienceDetails }
 
             // Send updated work experience data to the backend
             const response = await axios.put(
-                `http://localhost:3000/api/user/workExperience/${workExperienceDetails.id}`,
+                `${API}/user/workExperience/${workExperienceDetails.id}`,
                 workExperienceData,
                 { withCredentials: true }
             );

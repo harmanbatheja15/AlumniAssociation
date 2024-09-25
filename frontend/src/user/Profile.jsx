@@ -29,6 +29,7 @@ import EditWorkExperience from '../components/EditWorkExperience';
 import EditFaculty from '../components/EditFaculty';
 import EditStudent from '../components/EditStudent';
 import EditEducation from '../components/EditEducation';
+import { API } from '../../config';
 
 const Button = ({ icon, label, onClick }) => (
 	<button
@@ -79,7 +80,6 @@ const Profile = () => {
 				updateAboutMe(user?.profile?.about);
 				updateSocialMedia(user?.socialMedia || {});
 				setLoading(false);
-				console.log('USER: ', user);
 			} catch (error) {
 				console.log('Profile fetch failed! ', error);
 			}
@@ -135,10 +135,12 @@ const Profile = () => {
 									{!user?.student &&
 										(user?.role === 'STUDENT' ||
 											user?.role === 'ALUMNI') && (
-											<Button
-												icon={<FaUser />}
-												label='Add Student Details'
-											/>
+											<Link to='/addStudent'>
+												<Button
+													icon={<FaUser />}
+													label='Add Student Details'
+												/>
+											</Link>
 										)}
 									{!user?.faculty && user?.role === 'FACULTY' && (
 										<Link to='/addFaculty'>
@@ -214,8 +216,8 @@ const Profile = () => {
 										{user?.role}
 									</p>
 									<p className='text-gray-600 text-center mb-2'>
-										{(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && (user?.student?.joiningYear + ' - ' + user?.student?.passingYear)}
-										{user?.role === 'FACULTY' && (user?.faculty && user?.faculty?.joiningYear + ' - ' + user?.faculty?.leftYear)}
+										{(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && user?.student && (user?.student?.joiningYear + ' - ' + user?.student?.passingYear)}
+										{user?.role === 'FACULTY' && user?.faculty && (user?.faculty && user?.faculty?.joiningYear + ' - ' + user?.faculty?.leftYear)}
 									</p>
 									{/* {(user?.role === 'STUDENT' || user?.role === 'ALUMNI') && (
 										<p className='text-gray-600 text-center mb-2'>

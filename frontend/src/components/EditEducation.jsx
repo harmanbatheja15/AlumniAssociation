@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStore } from '../store';
+import { API } from '../../config';
 
 const EditEducation = ({ setEditEducationOpen, educationDetails }) => {
     const { user, updateUser } = useStore();
@@ -41,7 +42,7 @@ const EditEducation = ({ setEditEducationOpen, educationDetails }) => {
             setLoading(true);
 
             const response = await axios.put(
-                `http://localhost:3000/api/user/education/${educationDetails.id}`,
+                `${API}/user/education/${educationDetails.id}`,
                 education,
                 { withCredentials: true }
             );

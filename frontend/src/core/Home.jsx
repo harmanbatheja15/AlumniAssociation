@@ -73,7 +73,7 @@ const Home = () => {
             ))}
           </div>
           <div className="text-center mt-12">
-            <a href="#" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300">View All Events</a>
+            <Link to="/news&events" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300">View All Events</Link>
           </div>
         </div>
       </section>
