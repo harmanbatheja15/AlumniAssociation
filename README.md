@@ -8,10 +8,10 @@ React, Node, Express, Postgres, Prisma ORM, Tailwind CSS
 - cd `backend`
 - npm install
 - cp .env.example .env
-- npm run dev
+- nodemon index.js
 
 ## Frontend:
 - cd `frontend`
 - npm install
 - cp .env.example .env
-- nodemon `index.js`
+- npm run dev
